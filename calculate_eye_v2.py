@@ -91,10 +91,30 @@ class Eye:
         self.digit2 = 0
 
     def roll_eye(self, direction):
-        command = f"ROLL:{direction}\n"
+        # 转动方向与Arduino控制的映射
+        direction_map = {
+            0: "眼球旋转一圈",
+            1: "眼球向左下方转动",
+            2: "眼球向下方转动",
+            3: "眼球向右下方转动",
+            4: "眼球向左方转动",
+            5: "眼球静静地看着你",
+            6: "眼球向右方转动",
+            7: "眼球向左上方转动",
+            8: "眼球向上方转动",
+            9: "眼球向右上方转动"
+        }
+
+        # 获取方向的动作描述
+        action = direction_map.get(direction, "未知方向")
+        print(f"眼球转动方向: {action}")  # 打印动作信息
+
+        # 将动作信息发送给Arduino
+        command = f"ROLL:{direction}\n"  # 发送的指令
         if arduino:
-            arduino.write(command.encode())
-            print(f"Sent to Arduino: {command.strip()}")
+            arduino.write(command.encode())  # 通过串口发送命令
+            print(f"Sent to Arduino: {command.strip()}")  # 打印发送的命令
+
 
     def twink_eye(self, count):
         command = f"TWINK:{count}\n"
